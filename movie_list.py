@@ -8,7 +8,6 @@ BASE_URL = 'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/search
 key = config('API_KEY')
 weekGb = '0'
 
-# for i in range(2, -1, -1):
 with open('movie.csv', 'w', encoding='utf-8') as f:
     fieldnames = ['기간', '영화코드', '영화제목', '순위']
     writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -21,7 +20,6 @@ with open('movie.csv', 'w', encoding='utf-8') as f:
 
         response = requests.get(API_URL)
         data = response.json()
-        # pprint(data)
         movie_data = {}
 
         showRange = data['boxOfficeResult']['showRange']
@@ -33,8 +31,6 @@ with open('movie.csv', 'w', encoding='utf-8') as f:
                 '영화제목': movie.get('movieNm'),
                 '순위': movie.get('rank'),
             }
-
-            # pprint(movie_data)
 
         for item in movie_data.values():
             writer.writerow(item)
