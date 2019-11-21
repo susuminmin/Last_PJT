@@ -8,31 +8,33 @@ BASE_URL = 'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/search
 key = config('API_KEY')
 weekGb = '0'
 
-for i in range(3):
-    targetDt = datetime(2019, 11, 17) - timedelta(weeks=i)
-    targetDt = targetDt.strftime('%Y%m%d')
-    API_URL = f'{BASE_URL}?key={key}&targetDt={targetDt}&weekGb=0'
+# for i in range(2, -1, -1):
+with open('movie.csv', 'w', encoding='utf-8') as f:
+    fieldnames = ['기간', '영화코드', '영화제목', '순위']
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
 
-    response = requests.get(API_URL)
-    data = response.json()
-    # pprint(data)
-    movie_data = {}
+    for i in range(3):
+        targetDt = datetime(2019, 11, 17) - timedelta(weeks=i)
+        targetDt = targetDt.strftime('%Y%m%d')
+        API_URL = f'{BASE_URL}?key={key}&targetDt={targetDt}&weekGb=0'
 
-    showRange = data['boxOfficeResult']['showRange']
+        response = requests.get(API_URL)
+        data = response.json()
+        # pprint(data)
+        movie_data = {}
 
-    for movie in data['boxOfficeResult']['weeklyBoxOfficeList']:
-        movie_data[movie.get('movieCd')] = {
-            '기간': showRange ,
-            '영화코드': movie.get('movieCd'),
-            '영화제목': movie.get('movieNm'),
-            '순위': movie.get('rank'),
-        }
+        showRange = data['boxOfficeResult']['showRange']
 
-        pprint(movie_data)
+        for movie in data['boxOfficeResult']['weeklyBoxOfficeList']:
+            movie_data[movie.get('movieCd')] = {
+                '기간': showRange ,
+                '영화코드': movie.get('movieCd'),
+                '영화제목': movie.get('movieNm'),
+                '순위': movie.get('rank'),
+            }
 
-    with open('movie.csv', 'w', encoding='utf-8') as f:
-        fieldnames = ['기간', '영화코드', '영화제목', '순위']
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
+            # pprint(movie_data)
+
         for item in movie_data.values():
             writer.writerow(item)
