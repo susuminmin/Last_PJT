@@ -44,7 +44,7 @@ with open('movie.csv', 'w', encoding='utf-8') as f:
     writer = csv.DictWriter(f, fieldnames=fieldnames)
     writer.writeheader()
 
-    for i in range(5):
+    for i in range(900):
         targetDt = datetime(2019, 11, 17) - timedelta(weeks=i)
         targetDt = targetDt.strftime('%Y%m%d')
         API_URL = f'{BASE_URL}?key={key}&targetDt={targetDt}&weekGb=0'
