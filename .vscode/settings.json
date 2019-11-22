@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\sungwon\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "python.pythonPath": "venv\\Scripts\\python.exe",
     "git.ignoreLimitWarning": true,
     "files.associations": {
         "**/templates/*.html": "django-html",
