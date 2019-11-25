@@ -351,7 +351,7 @@ $(document).ready(function () {
               {% endfor %}
                      
             {% else %}
-            <p>
+            <p class="logout">
             <a href="{% url 'accounts:login' %}">로그인</a>
             <a href="{% url 'accounts:signup' %}">회원가입</a>
             </p>
@@ -370,12 +370,8 @@ $(document).ready(function () {
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
-                        <h1>이 밑에 block_title 있읍니다.</h1>
-                        {% block title %}
-                        {% endblock title %}
-                        <p>토글 사이드바 네비게이션에 대한 본문 내용입니다.</p>
+                        <h1>{% block logo %}{% endblock logo %}</h1>
                         {% block body %}
-                        
                         {% endblock body %}
                     </div>
                 </div>
