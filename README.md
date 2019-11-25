@@ -310,7 +310,14 @@ with open('movie.csv', 'w', encoding='utf-8') as f:
 
 
 
-> `Day03` 20191123 (토)
+> `Day03` 20191125 (월)
 
 ## 0. 목표
 
+- 한 일
+
+  ppt만들어서 페이지 구성해봄
+
+  movies model, form 만들었다
+
+  base.html을 만들건데, 로그인 여부에 따라 사이드바 내용을 바꾼다
