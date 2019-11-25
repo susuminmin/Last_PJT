@@ -15,6 +15,7 @@ def index(request):
         # 사용자가 클릭한 영화들 모두 가져오기  //  사용자가 검색한 날짜들 모두 가져오기
         clicked_movies = user.clicked_movies.all()
         searched_dates = user.searched_dates.all()
+        
         if request.method == 'POST':
             dateform = SearchedDateForm(request.POST)
             if dateform.is_valid():
@@ -24,15 +25,15 @@ def index(request):
         else: # GET 요청
             dateform = SearchedDateForm()
 
-
-
-
         context = {
         'clicked_movies': clicked_movies,
         'searched_dates': searched_dates,
         'dateform': dateform,
         }
         return render(request, 'movies/index.html', context)
+
+
+    # 로그인 X 유저일 경우 아예 아무 것도 못 함
     else:
         return render(request, 'movies/index.html')
     
