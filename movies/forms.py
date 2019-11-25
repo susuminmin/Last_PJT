@@ -3,7 +3,7 @@ from .models import Review, SearchedDate
 
 
 class ReviewForm(forms.ModelForm):
-    
+
     class Meta:
         model = Review
         fields = ['content', 'score', ]
@@ -11,11 +11,6 @@ class ReviewForm(forms.ModelForm):
 
 class SearchedDateForm(forms.ModelForm):
 
-    date = forms.DateField(
-        widget = forms.DateInput(format='%m/%d'),
-        input_formats=('%m/%d'),
-    )
-
     class Meta:
         model = SearchedDate
-        fields = ['date', ]
+        fields = ['month', 'day']

@@ -121,8 +121,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# DATE_INPUT_FORMATS = ['%m-%d']
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]

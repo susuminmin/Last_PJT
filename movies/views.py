@@ -6,9 +6,9 @@ from django.http import HttpResponse
 from .models import Movie, Review, SearchedDate
 from .forms import ReviewForm, SearchedDateForm
 
-# 로그인이 되었다고 가정하고 해보자
-@require_GET
+
 def index(request):
+    # 로그인이 되어있을 경우에
     if request.user.is_authenticated:
         # 사이드바에서 제공할 데이터들
         user = request.user
@@ -16,12 +16,14 @@ def index(request):
         clicked_movies = user.clicked_movies.all()
         searched_dates = user.searched_dates.all()
         
+        # 월/일이 입력되었고, 내용을 담아서 movie_list 페이지로 보내줘야한다
         if request.method == 'POST':
             dateform = SearchedDateForm(request.POST)
             if dateform.is_valid():
-                dateform.save()
-                return render(request, 'movies/index.html')
-                # return redirect('movies:box_office', date.date)
+                date = dateform.save(commit=False)
+                date.user = request.user
+                date.save()
+                return redirect('movies:movie_list', date.pk)
         else: # GET 요청
             dateform = SearchedDateForm()
 
@@ -38,3 +40,9 @@ def index(request):
         return render(request, 'movies/index.html')
     
     
+def movie_list(request, date_pk):
+    date =  get_object_or_404(SearchedDate, pk=date_pk)
+    context = {
+        'date': date
+    }
+    return render(request, 'movies/movie_list.html', context)

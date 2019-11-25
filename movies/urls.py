@@ -5,6 +5,6 @@ app_name = 'movies'
 
 urlpatterns = [
 
-    path('movie_list/', views.movie_list, name="movie_list"),
+    path('movie_list/<int:date_pk>/', views.movie_list, name="movie_list"),
     path('', views.index, name="index"),
 ]
