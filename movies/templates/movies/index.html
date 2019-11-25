@@ -5,7 +5,13 @@
 
 
 {% block body %}
-<p>토글 사이드바 네비게이션에 대한 본문 내용입니다.</p>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ dateform.as_p }}
+  </form>
+
+
 {% endblock body %}
 
 
