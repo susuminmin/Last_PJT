@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,7 +40,7 @@ html { height: 100%;}
     margin-left: -220px;
     overflow-y: auto; /* 본문에 표시되는 내용에 따라 세로 스크롤이 생긴다. */
     overflow-x: hidden; /* 부모요소의 범위를 넘어가는 자식요소의 부분은 보이지 않도록 처리 */
-    background: #f1f1f1;
+    background: darkgray;
     -webkit-transition: all 0.5s ease; /* CSS 속성을 변경할 때 애니메이션 속도를 조절하는 방법을 제공 */
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -284,6 +285,10 @@ html { height: 100%;}
     background-color: rgba(250,250,250,.8);
     z-index: 1;
 }
+.logout {
+  margin: 7px 0 0 10px;
+}
+
 </style>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -325,13 +330,16 @@ $(document).ready(function () {
         <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
             <ul class="nav sidebar-nav">
             {% if user.is_authenticated %}
-              <p>
+              <p class="logout">
               <a href="{% url 'accounts:logout' %}">로그아웃</a>
               </p>
-              {% comment %} 클릭한 영화, 날짜를 보여주는 부분 {% endcomment %}
-              
-              <span>{{ user.username }}</span><br>
 
+              {% comment %} 사진, 이름을 보여주는 부분 {% endcomment %}
+              <div class="text-center">
+                <img src="{% static '프로필.jpg' %}" class="img-circle" width=100px height=100px><br>
+                <span>{{ user.username }}</span><br>
+              </div>
+              {% comment %} 클릭한 영화, 날짜를 보여주는 부분 {% endcomment %}
               <h2>날짜</h2>
               {% for searched_date in searched_dates %}
                 <p>{{ searched_date.date }}</p>
