@@ -291,8 +291,7 @@
   </style>
 </head>
 <body>
-  {% block body %}
-  {% endblock body %}
+
 
   <script>
 $(document).ready(function () {
@@ -383,7 +382,9 @@ $(document).ready(function () {
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <h1>Toggle Sidebar Navigation</h1>
-                        <p>토글 사이드바 네비게이션에 대한 본문 내용입니다.</p>
+                        {% comment %} <p>토글 사이드바 네비게이션에 대한 본문 내용입니다.</p> {% endcomment %}
+                        {% block body %}
+                        {% endblock body %}
                     </div>
                 </div>
             </div>

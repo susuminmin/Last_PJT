@@ -7,7 +7,7 @@ class Movie(models.Model):
     poster_url = models.CharField(max_length=200)
     clicked_users = models.ManyToManyField( # movie.clicked_users.all()  =>  해당 영화를 클릭한 모든 유저를 불러오는 방법
         settings.AUTH_USER_MODEL,
-        related_name='clicked_movies'  # user.clicked_moves.all()  =>  해당 유저가 클릭만 모든 영화를 불러오는 방법
+        related_name='clicked_movies'  # user.clicked_movies.all()  =>  해당 유저가 클릭만 모든 영화를 불러오는 방법
     )
 
 
@@ -21,6 +21,12 @@ class Review(models.Model):
 
     class Meta:
         ordering = ('-pk', )
+
+
+class SearchedDate(models.Model):
+    date = models.DateField()
+    # 사용자 입장에서 내가 검색한 모든 날짜 접근 => user.searched_dates.all()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='searched_dates',on_delete=models.CASCADE) 
 
 
 
