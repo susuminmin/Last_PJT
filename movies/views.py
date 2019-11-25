@@ -15,9 +15,22 @@ def index(request):
         # 사용자가 클릭한 영화들 모두 가져오기  //  사용자가 검색한 날짜들 모두 가져오기
         clicked_movies = user.clicked_movies.all()
         searched_dates = user.searched_dates.all()
+        if request.method == 'POST':
+            dateform = SearchedDateForm(request.POST)
+            if dateform.is_valid():
+                dateform.save()
+                return render(request, 'movies/index.html')
+                # return redirect('movies:box_office', date.date)
+        else: # GET 요청
+            dateform = SearchedDateForm()
+
+
+
+
         context = {
         'clicked_movies': clicked_movies,
-        'searched_dates': searched_dates
+        'searched_dates': searched_dates,
+        'dateform': dateform,
         }
         return render(request, 'movies/index.html', context)
     else:
