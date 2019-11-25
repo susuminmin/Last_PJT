@@ -37,7 +37,8 @@ def index(request):
 
     # 로그인 X 유저일 경우 아예 아무 것도 못 함
     else:
-        return render(request, 'movies/index.html')
+        dateform = SearchedDateForm()
+        return render(request, 'movies/index.html', {'dateform': dateform})
     
     
 def movie_list(request, date_pk):
