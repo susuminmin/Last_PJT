@@ -39,7 +39,7 @@ html { height: 100%;}
     margin-left: -220px;
     overflow-y: auto; /* 본문에 표시되는 내용에 따라 세로 스크롤이 생긴다. */
     overflow-x: hidden; /* 부모요소의 범위를 넘어가는 자식요소의 부분은 보이지 않도록 처리 */
-    background: #1a1a1a;
+    background: #f1f1f1;
     -webkit-transition: all 0.5s ease; /* CSS 속성을 변경할 때 애니메이션 속도를 조절하는 방법을 제공 */
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -325,16 +325,29 @@ $(document).ready(function () {
         <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
             <ul class="nav sidebar-nav">
             {% if user.is_authenticated %}
-          <p>
-            <span>Hello, {{ user.username }}</span>
-            <a href="{% url 'accounts:logout' %}">로그아웃</a>
-          </p>
-          {% else %}
-          <p>
+              <p>
+              <a href="{% url 'accounts:logout' %}">로그아웃</a>
+              </p>
+              {% comment %} 클릭한 영화, 날짜를 보여주는 부분 {% endcomment %}
+              
+              <span>{{ user.username }}</span><br>
+
+              <h2>날짜</h2>
+              {% for searched_date in searched_dates %}
+                <p>{{ searched_date.date }}</p>
+              {% endfor %}
+
+              <h2>영화</h2>
+              {% for click_movie in clicked_movies %}
+                <p>{{ click_movie.title }}</p>
+              {% endfor %}
+                     
+            {% else %}
+            <p>
             <a href="{% url 'accounts:login' %}">로그인</a>
             <a href="{% url 'accounts:signup' %}">회원가입</a>
-          </p>
-          {% endif %}
+            </p>
+            {% endif %}
           </ul>
         </nav>
         <!-- /#sidebar-wrapper -->
