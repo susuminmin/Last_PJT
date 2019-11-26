@@ -42,8 +42,11 @@ def index(request):
     
     
 def movie_list(request, date_pk):
+    # date정보를 가져옴 (01/23)
     date =  get_object_or_404(SearchedDate, pk=date_pk)
     context = {
-        'date': date
+        'day': date.day,
+        'month': date.month,
+        'result': 20180000 + 100 * int(date.month) + int(date.day)
     }
     return render(request, 'movies/movie_list.html', context)
