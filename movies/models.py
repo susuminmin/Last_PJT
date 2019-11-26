@@ -9,7 +9,7 @@ class Movie(models.Model):
     showRange = models.CharField(max_length=30)
     poster_url = models.CharField(max_length=200)
     title = models.CharField(max_length=20)
-    movie_code = models.IntegerField()
+    movie_code = models.CharField(max_length=30)
     naver_movie_url = models.CharField(max_length=200)
     description = models.TextField()
     clicked_users = models.ManyToManyField(  # movie.clicked_users.all()  =>  해당 영화를 클릭한 모든 유저를 불러오는 방법
