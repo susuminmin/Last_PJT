@@ -5,8 +5,10 @@ from django.conf import settings
 # MakeDB모델을 거쳐서 movie.csv -> 네이버API -> (Django MakeDB모델) -> DB
 class Movie(models.Model):
     # 필요한 정보 : rank, 국문 title, 영문 title, description, poster_url, naver_movie_url, -> csv에서부터 db를 만들기 위해 필요한 필드
-    range_rank = models.CharField(max_length=30)
-    showRange = models.CharField(max_length=30)
+    # range_rank = models.CharField(max_length=30)
+    # showRange = models.CharField(max_length=30)
+    start_date = models.DateField()
+    end_date = models.DateField()
     poster_url = models.CharField(max_length=200)
     title = models.CharField(max_length=20)
     movie_code = models.CharField(max_length=30)
