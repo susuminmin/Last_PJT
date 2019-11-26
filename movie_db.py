@@ -14,13 +14,13 @@ from movies.models import Movie
 def make_model():
     movie = Movie()
 
-    movie.range_rank = '7'
-    movie.showRange = '20191111~201911171'
-    movie.poster_url = 'www.naver.com'
-    movie.title = '쑤하'
-    movie.movie_code = 20191234
-    movie.naver_movie_url = 'www.google.com'
-    movie.description = '대니’(나탈리아 레이즈)를 지키기 위해 슈'
+    movie.range_rank = 
+    movie.showRange = 
+    movie.poster_url = 
+    movie.title = 
+    movie.movie_code = 
+    movie.naver_movie_url = 
+    movie.description = 
     movie.save()
 
 

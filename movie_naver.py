@@ -4,6 +4,18 @@ from decouple import config
 import csv
 import bs4
 from bs4 import BeautifulSoup
+import os
+import django
+from django.db import transaction
+
+
+# django setting 파일 설정하기 및 장고 셋업
+cur_dir = os.path.dirname(__file__)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "lastpjt.settings")
+django.setup()
+# 모델 임포트는 django setup이 끝난 후에 가능하다. 셋업 전에 import하면 에러난다. db connection 정보가 없어서......
+from movies.models import Movie
+
 
 BASE_URL = 'https://openapi.naver.com/v1/search/movie.json'
 clientId = config('CLIENT_ID')
@@ -24,22 +36,11 @@ with open('movie.csv', 'r', newline='', encoding='utf-8') as f:
             '영화코드': row['영화코드'],
             '영화명(국문)': row['영화명(국문)'],
             '기간순위': row['기간순위'],
-            '기간시작': row['기간시작'],
-            '기간종료': row['기간종료'],
             }
-
-# pprint(query_dict)
-#  '20080107~200801137': {'기간': '20080107~20080113',
-#                         '기간순위': '20080107~200801137',
-#                         '기간시작': '20080107',
-#                         '기간종료': '20080113',
-#                         '순위': '7',
-#                         '영화명(국문)': '황금 나침반',
-#                         '영화코드': '20070551'},
 
 # 네이버에서 영화에 맞는 줄거리와 포스터url를 받아와서 dict에 합친 후,
 # model.py의 MakeDB모델을 거쳐 우리 DB에 저장한다
-fieldnames = ('기간순위', '기간', '기간시작', '기간종료', '썸네일_이미지의_URL', '영화명(국문)', '영화코드', '하이퍼텍스트_링크', '줄거리')
+fieldnames = ('기간순위', '기간', '썸네일_이미지의_URL', '영화명(국문)', '영화코드', '하이퍼텍스트_링크', '줄거리')
 with open('movie_naver.csv', 'w', encoding='utf-8', newline='') as f:
     writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
     writer.writeheader()
@@ -71,5 +72,27 @@ with open('movie_naver.csv', 'w', encoding='utf-8', newline='') as f:
             pass
         # print('---------------')
 
+        # movie_naver.csv 만들기
         writer.writerow(movie_dict)
+        # pprint(movie_dict)
+
+        # moive.db에 저장하는 부분
+        @transaction.atomic
+        def make_model():
+            movie = Movie()
+
+            movie.range_rank = movie_dict['기간순위']
+            movie.showRange = movie_dict['기간']
+            movie.poster_url = movie_dict['썸네일_이미지의_URL']
+            movie.title = movie_dict['영화명(국문)']
+            movie.movie_code = movie_dict['영화코드']
+            movie.naver_movie_url = movie_dict['하이퍼텍스트_링크']
+            movie.description = movie_dict['줄거리']
+            movie.save()
+
+
+        if __name__ == "__main__":
+            make_model()
+
+
 
