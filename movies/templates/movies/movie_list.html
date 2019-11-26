@@ -4,9 +4,24 @@
 {% endblock logo %}
 {% block body %}
 
-  {{ rank }}
+  {{ date.month }}
+  {{ date.day }} <br>
+   
+  {{ target }}
 
-  {{ title }}
+  {% for movie18 in movies %}
+    {% if movie18.rank <= 5 %}
+    <img src="{{ movie.poster_url }}"><br>
+    {{ movie.rank }}. {{ movie.title }}<br>
+    {% endif %}
+  {% endfor %}
+
+  {% for movie17 in movies %}
+    {% if movie18.rank <= 5 %}
+    <img src="{{ movie.poster_url }}"><br>
+    {{ movie.rank }}. {{ movie.title }}<br>
+    {% endif %}
+  {% endfor %}
 
   <script>
   

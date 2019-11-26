@@ -43,32 +43,103 @@ def index(request):
     
     
 def movie_list(request, date_pk):
-    # date정보를 가져옴 (01/23)
+    # # date정보를 가져옴 (01/23)
     date = get_object_or_404(SearchedDate, pk=date_pk)
-    target = date.month + date.day
-    
+    # date19 = 20190000 + int(date.month + date.day)
+    date18 = 20180000 + int(date.month + date.day)
+    date17 = 20170000 + int(date.month + date.day)
+    date16 = 20160000 + int(date.month + date.day)
+    date15 = 20150000 + int(date.month + date.day)
+    date14 = 20140000 + int(date.month + date.day)
+    date13 = 20130000 + int(date.month + date.day)
+    date12 = 20120000 + int(date.month + date.day)
+    date11 = 20110000 + int(date.month + date.day)
+    date10 = 20100000 + int(date.month + date.day)
+    date09 = 20090000 + int(date.month + date.day)
+    date08 = 20080000 + int(date.month + date.day)
+    date07 = 20070000 + int(date.month + date.day)
+    date06 = 20060000 + int(date.month + date.day)
+    date05 = 20050000 + int(date.month + date.day)
+    date04 = 20040000 + int(date.month + date.day)
 
-    for year in range(2004, 2019):
-        with open('movies/movie_naver.csv', 'r', newline='', encoding='utf-8') as f:
-            items = csv.DictReader(f)
-            new_target = int(str(year) + target)
-
-            for item in items:
-                start = int(item['기간시작'])
-                end = int(item['기간종료'])
-
-                if start <= new_target <= end:
-                    rank = item['기간순위'][-1]
-                    title = item['영화제목']
-                    poster_url = item['썸네일_이미지의_URL']
-                    discription = item['줄거리']
-                    naver_movie_url = item['하이퍼텍스트_링크']
-                    # print(rank, title, poster_url, discription, naver_movie_url)
+    movies18 = Movie.objects.filter(
+        start_date__lte=date18,
+        end_date__gte=date18,
+    )
+    movies17 = Movie.objects.filter(
+        start_date__lte=date17,
+        end_date__gte=date17,
+    )
+    movies16 = Movie.objects.filter(
+        start_date__lte=date16,
+        end_date__gte=date16,
+    )
+    movies15 = Movie.objects.filter(
+        start_date__lte=date15,
+        end_date__gte=date15,
+    )
+    movies14 = Movie.objects.filter(
+        start_date__lte=date14,
+        end_date__gte=date14,
+    )
+    movies13 = Movie.objects.filter(
+        start_date__lte=date13,
+        end_date__gte=date13,
+    )
+    movies12 = Movie.objects.filter(
+        start_date__lte=date12,
+        end_date__gte=date12,
+    )
+    movies11 = Movie.objects.filter(
+        start_date__lte=date11,
+        end_date__gte=date11,
+    )
+    movies10 = Movie.objects.filter(
+        start_date__lte=date10,
+        end_date__gte=date10,
+    )
+    movies09 = Movie.objects.filter(
+        start_date__lte=date09,
+        end_date__gte=date09,
+    )
+    movies08 = Movie.objects.filter(
+        start_date__lte=date08,
+        end_date__gte=date08,
+    )
+    movies07 = Movie.objects.filter(
+        start_date__lte=date07,
+        end_date__gte=date07,
+    )
+    movies06 = Movie.objects.filter(
+        start_date__lte=date06,
+        end_date__gte=date06,
+    )
+    movies05 = Movie.objects.filter(
+        start_date__lte=date05,
+        end_date__gte=date05,
+    )
+    movies04 = Movie.objects.filter(
+        start_date__lte=date04,
+        end_date__gte=date04,
+    )
 
     context = {
-        'rank': rank,
-        'title': title,
-        # 'result': 20180000 + 100 * int(date.month) + int(date.day)
+        'date': date,
+        'movies18': movies18,
+        'movies17': movies17,
+        'movies16': movies16,
+        'movies15': movies15,
+        'movies14': movies14,
+        'movies13': movies13,
+        'movies12': movies12,
+        'movies11': movies11,
+        'movies10': movies10,
+        'movies09': movies09,
+        'movies08': movies08,
+        'movies07': movies07,
+        'movies06': movies06,
+        'movies05': movies05,
+        'movies04': movies04,
     }
     
     return render(request, 'movies/movie_list.html', context)
