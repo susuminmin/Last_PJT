@@ -7,6 +7,8 @@ from .models import Movie, Review, SearchedDate
 from .forms import ReviewForm, SearchedDateForm
 from decouple import config
 import csv
+
+
 def index(request):
     # 로그인이 되어있을 경우에
     if request.user.is_authenticated:
@@ -14,7 +16,9 @@ def index(request):
         user = request.user
         # 사용자가 클릭한 영화들 모두 가져오기  //  사용자가 검색한 날짜들 모두 가져오기
         clicked_movies = user.clicked_movies.all()
-        searched_dates = user.searched_dates.all()
+        # clicked_movies = Movie.objects.filter()
+        # searched_dates = user.searched_dates.all()
+        searched_dates = SearchedDate.objects.filter(user_id=user.id)
         # 월/일이 입력되었고, 내용을 담아서 movie_list 페이지로 보내줘야한다
         if request.method == 'POST':
             dateform = SearchedDateForm(request.POST)
@@ -23,19 +27,23 @@ def index(request):
                 date.user = request.user
                 date.save()
                 return redirect('movies:movie_list', date.pk)
-        else: # GET 요청
+        else:  # GET 요청
             dateform = SearchedDateForm()
         context = {
-        'clicked_movies': clicked_movies,
-        'searched_dates': searched_dates,
-        'dateform': dateform,
+            'clicked_movies': clicked_movies,
+            'searched_dates': searched_dates,
+            'dateform': dateform,
         }
         return render(request, 'movies/index.html', context)
     # 로그인 X 유저일 경우 아예 아무 것도 못 함
     else:
         dateform = SearchedDateForm()
         return render(request, 'movies/index.html', {'dateform': dateform})
+
+
 def movie_list(request, date_pk):
+    user = request.user
+    searched_dates = SearchedDate.objects.filter(user_id=user.id)
     # # date정보를 가져옴 (01/23)
     date = get_object_or_404(SearchedDate, pk=date_pk)
     # date19 = 20190000 + int(date.month + date.day)
@@ -131,5 +139,14 @@ def movie_list(request, date_pk):
         'movies06': movies06,
         'movies05': movies05,
         'movies04': movies04,
+        'searched_dates': searched_dates,
     }
     return render(request, 'movies/movie_list.html', context)
+
+
+def movie_review(request, movie_code):
+    movie = Movie.objects.filter(movie_code=movie_code).first()
+    context = {
+        'movie': movie
+    }
+    return render(request, 'movies/movie_review.html', context)
