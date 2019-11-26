@@ -1,15 +1,20 @@
 {% extends 'base.html' %}
-
 {% block logo %}영화 검색 후 나올 페이지입니다.
 {% endblock logo %}
 {% block body %}
-
-  {{ rank }}
-
-  {{ title }}
-
+  {{ date.month }}
+  {{ date.day }} <br>
+  {{ target }}
+  {% for movie18 in movies %}
+    {% if movie18.rank <= 5 %}
+    <img src="{{ movie.poster_url }}"><br>
+    {{ movie.rank }}. {{ movie.title }}<br>
+    {% endif %}
+  {% endfor %}
+  {% for movie17 in movies %}
+    {% if movie18.rank <= 5 %}
+    <img src="{{ movie.poster_url }}"><br>
+    {{ movie.rank }}. {{ movie.title }}<br>
+    {% endif %}
+  {% endfor %}
   <script>
-  
-  </script>
-  
-{% endblock body %}
