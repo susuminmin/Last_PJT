@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from .models import Movie, Review, SearchedDate
 from .forms import ReviewForm, SearchedDateForm
+from decouple import config
+import csv
 
 
 def index(request):
@@ -43,10 +45,32 @@ def index(request):
     
 def movie_list(request, date_pk):
     # date정보를 가져옴 (01/23)
-    date =  get_object_or_404(SearchedDate, pk=date_pk)
+    date = get_object_or_404(SearchedDate, pk=date_pk)
+    target = date.month + date.day
+    
+
+    for year in range(2004, 2019):
+        with open('movies/movie_naver.csv', 'r', newline='', encoding='utf-8') as f:
+            items = csv.DictReader(f)
+            new_target = int(str(year) + target)
+
+            for item in items:
+                start = int(item['기간시작'])
+                end = int(item['기간종료'])
+
+                if start <= new_target <= end:
+                    rank = item['기간순위'][-1]
+                    title = item['영화제목']
+                    poster_url = item['썸네일_이미지의_URL']
+                    discription = item['줄거리']
+                    naver_movie_url = item['하이퍼텍스트_링크']
+                    # print(rank, title, poster_url, discription, naver_movie_url)
+
+
     context = {
-        'day': date.day,
-        'month': date.month,
-        'result': 20180000 + 100 * int(date.month) + int(date.day)
+        'rank': rank,
+        'title': title,
+        # 'result': 20180000 + 100 * int(date.month) + int(date.day)
     }
+    
     return render(request, 'movies/movie_list.html', context)
