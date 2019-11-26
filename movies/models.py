@@ -3,7 +3,7 @@ from django.conf import settings
 
 
 # MakeDB모델을 거쳐서 movie.csv -> 네이버API -> (Django MakeDB모델) -> DB
-class MakeDB(model.Model):
+class MakeDB(models.Model):
     Range_rank = models.CharField(max_length=30)
     showRange = models.CharField(max_length=30)
     start = models.CharField(max_length=10)
