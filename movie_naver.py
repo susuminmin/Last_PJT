@@ -67,7 +67,6 @@ with open('movie_naver.csv', 'w', encoding='utf-8', newline='') as f:
             content = soup.select_one('div.story_area p.con_tx')
             movie_dict['줄거리'] = content.text
 
-
         except:
             pass
         # print('---------------')
@@ -80,16 +79,36 @@ with open('movie_naver.csv', 'w', encoding='utf-8', newline='') as f:
         @transaction.atomic
         def make_model():
             movie = Movie()
-
-            movie.range_rank = movie_dict['기간순위']
-            movie.showRange = movie_dict['기간']
-            movie.poster_url = movie_dict['썸네일_이미지의_URL']
-            movie.title = movie_dict['영화명(국문)']
-            movie.movie_code = movie_dict['영화코드']
-            movie.naver_movie_url = movie_dict['하이퍼텍스트_링크']
-            movie.description = movie_dict['줄거리']
+            try:
+                movie.range_rank = movie_dict['기간순위']
+            except:
+                pass
+            try:
+                movie.showRange = movie_dict['기간']
+            except:
+                pass
+            try:
+                movie.poster_url = movie_dict['썸네일_이미지의_URL']
+            except:
+                pass
+            try:
+                movie.title = movie_dict['영화명(국문)']
+            except:
+                pass
+            try:
+                movie.movie_code = movie_dict['영화코드']
+            except:
+                pass
+            try:
+                movie.naver_movie_url = movie_dict['하이퍼텍스트_링크']
+            except:
+                pass
+            try:
+                movie.description = movie_dict['줄거리']
+            except:
+                pass
+            
             movie.save()
-
 
         if __name__ == "__main__":
             make_model()
