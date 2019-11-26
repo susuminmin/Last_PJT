@@ -42,7 +42,7 @@ with open('movie.csv', 'r', newline='', encoding='utf-8') as f:
 
 # 네이버에서 영화에 맞는 줄거리와 포스터url를 받아와서 dict에 합친 후,
 # model.py의 MakeDB모델을 거쳐 우리 DB에 저장한다
-fieldnames = ('기간순위', '기간시작', '기간종료', '썸네일_이미지의_URL', '영화명(국문)', '영화코드', '하이퍼텍스트_링크', '줄거리')
+fieldnames = ('순위', '기간시작', '기간종료', '썸네일_이미지의_URL', '영화명(국문)', '영화코드', '하이퍼텍스트_링크', '줄거리')
 with open('movie_naver.csv', 'w', encoding='utf-8', newline='') as f:
     writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
     writer.writeheader()
@@ -81,16 +81,16 @@ with open('movie_naver.csv', 'w', encoding='utf-8', newline='') as f:
         @transaction.atomic
         def make_model():
             movie = Movie()
-            # try:
-            #     movie.range_rank = movie_dict['기간순위']
-            # except:
-                # pass
             try:
                 movie.start_date = movie_dict['기간시작']
             except:
                 pass
             try:
                 movie.end_date = movie_dict['기간종료']
+            except:
+                pass
+            try:
+                movie.rank = movie_dict['순위']
             except:
                 pass
             try:

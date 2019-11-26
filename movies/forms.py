@@ -13,4 +13,4 @@ class SearchedDateForm(forms.ModelForm):
 
     class Meta:
         model = SearchedDate
-        fields = ['month', 'day']
+        fields = ['month', 'day', ]

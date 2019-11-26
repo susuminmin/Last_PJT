@@ -23,11 +23,11 @@ with open('movie.csv', 'w', encoding='utf-8') as f:
         movie_data = {}
 
         showRange = data['boxOfficeResult']['showRange']
-        # start_date, end_date가 2003-01-01 형태(날짜형태)로 들어왔다
-        start = showRange[:4] + '-' + showRange[4:6] + '-' + showRange[6:8]
-        end = showRange[9:13] + '-' + showRange[13:15] + '-' + showRange[15:17]
-        # print(start)
-        # print(end)
+        start = int(showRange[:8])
+        end = int(showRange[9:])
+        # start = 20191117
+        print(start)
+        print(end)
 
         for movie in data['boxOfficeResult']['weeklyBoxOfficeList']:
             # pprint(movie)

@@ -7,8 +7,9 @@ class Movie(models.Model):
     # 필요한 정보 : rank, 국문 title, 영문 title, description, poster_url, naver_movie_url, -> csv에서부터 db를 만들기 위해 필요한 필드
     # range_rank = models.CharField(max_length=30)
     # showRange = models.CharField(max_length=30)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.IntegerField()
+    end_date = models.IntegerField()
+    rank = models.IntegerField()
     poster_url = models.CharField(max_length=200)
     title = models.CharField(max_length=20)
     movie_code = models.CharField(max_length=30)
@@ -36,8 +37,8 @@ class Review(models.Model):
 
 
 class SearchedDate(models.Model):
-    month = models.CharField(max_length=3)
-    day = models.CharField(max_length=3)
+    month = models.CharField(max_length=2)
+    day = models.CharField(max_length=2)
     # 사용자 입장에서 내가 검색한 모든 날짜 접근 => user.searched_dates.all()
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='searched_dates', on_delete=models.CASCADE)
