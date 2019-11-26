@@ -7,7 +7,6 @@ from .models import Movie, Review, SearchedDate
 from .forms import ReviewForm, SearchedDateForm
 from decouple import config
 import csv
-
 def index(request):
     # 로그인이 되어있을 경우에
     if request.user.is_authenticated:
@@ -16,7 +15,6 @@ def index(request):
         # 사용자가 클릭한 영화들 모두 가져오기  //  사용자가 검색한 날짜들 모두 가져오기
         clicked_movies = user.clicked_movies.all()
         searched_dates = user.searched_dates.all()
-        
         # 월/일이 입력되었고, 내용을 담아서 movie_list 페이지로 보내줘야한다
         if request.method == 'POST':
             dateform = SearchedDateForm(request.POST)
@@ -27,21 +25,16 @@ def index(request):
                 return redirect('movies:movie_list', date.pk)
         else: # GET 요청
             dateform = SearchedDateForm()
-
         context = {
         'clicked_movies': clicked_movies,
         'searched_dates': searched_dates,
         'dateform': dateform,
         }
         return render(request, 'movies/index.html', context)
-
-
     # 로그인 X 유저일 경우 아예 아무 것도 못 함
     else:
         dateform = SearchedDateForm()
         return render(request, 'movies/index.html', {'dateform': dateform})
-    
-    
 def movie_list(request, date_pk):
     # # date정보를 가져옴 (01/23)
     date = get_object_or_404(SearchedDate, pk=date_pk)
@@ -61,7 +54,10 @@ def movie_list(request, date_pk):
     date06 = 20060000 + int(date.month + date.day)
     date05 = 20050000 + int(date.month + date.day)
     date04 = 20040000 + int(date.month + date.day)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4542daa0ecee48e664fbf8cdcd9bd5827d131e0a
     movies18 = Movie.objects.filter(
         start_date__lte=date18,
         end_date__gte=date18,
@@ -122,7 +118,10 @@ def movie_list(request, date_pk):
         start_date__lte=date04,
         end_date__gte=date04,
     )
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4542daa0ecee48e664fbf8cdcd9bd5827d131e0a
     context = {
         'date': date,
         'movies18': movies18,
@@ -141,7 +140,4 @@ def movie_list(request, date_pk):
         'movies05': movies05,
         'movies04': movies04,
     }
-    
     return render(request, 'movies/movie_list.html', context)
-
-

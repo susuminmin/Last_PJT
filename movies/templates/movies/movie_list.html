@@ -1,30 +1,42 @@
 {% extends 'base.html' %}
-
 {% block logo %}영화 검색 후 나올 페이지입니다.
 {% endblock logo %}
 {% block body %}
+<<<<<<< HEAD
 
   {{ date.month }}
   {{ date.day }} <br>
    
   {{ target }}
 
+=======
+  {{ date.month }}
+  {{ date.day }} <br>
+  {{ target }}
+>>>>>>> 4542daa0ecee48e664fbf8cdcd9bd5827d131e0a
   {% for movie18 in movies %}
     {% if movie18.rank <= 5 %}
     <img src="{{ movie.poster_url }}"><br>
     {{ movie.rank }}. {{ movie.title }}<br>
     {% endif %}
   {% endfor %}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4542daa0ecee48e664fbf8cdcd9bd5827d131e0a
   {% for movie17 in movies %}
     {% if movie18.rank <= 5 %}
     <img src="{{ movie.poster_url }}"><br>
     {{ movie.rank }}. {{ movie.title }}<br>
     {% endif %}
   {% endfor %}
+<<<<<<< HEAD
 
   <script>
   
   </script>
   
 {% endblock body %}
+=======
+  <script>
+>>>>>>> 4542daa0ecee48e664fbf8cdcd9bd5827d131e0a

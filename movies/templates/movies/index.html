@@ -1,18 +1,10 @@
 {% extends 'base.html' %}
-
 {% block logo %}그날의 박스오피스...
 {% endblock logo %}
-
-
 {% block body %}
-
   <form method="POST">
     {% csrf_token %}
     {{ dateform.month }} 월 {{ dateform.day }} 일
     <button type="submit">로 돌아갈래....</button>
   </form>
-
-
 {% endblock body %}
-
-
