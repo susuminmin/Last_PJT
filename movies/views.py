@@ -13,12 +13,12 @@ def index(request):
     # 로그인이 되어있을 경우에
     if request.user.is_authenticated:
         user = request.user
-        clicked_movies = user.clicked_movies.all()
         searched_dates = SearchedDate.objects.filter(user_id=user.id)
+        clicked_movies = user.clicked_movies.all()
+
         if request.method == 'POST':
             month = request.POST.get('month')
             day = request.POST.get('day')
-
             date = SearchedDate()
             date.month = month
             date.day = day
@@ -41,6 +41,7 @@ def index(request):
 
 def movie_list(request, date_pk):
     user = request.user
+    clicked_movies = user.clicked_movies.all()
     searched_dates = SearchedDate.objects.filter(user_id=user.id)
     # # date정보를 가져옴 (01/23)
     date = get_object_or_404(SearchedDate, pk=date_pk)
@@ -140,14 +141,25 @@ def movie_list(request, date_pk):
         'movies05': movies05,
         'movies04': movies04,
         'searched_dates': searched_dates,
+        'clicked_movies': clicked_movies,
     }
     return render(request, 'movies/movie_list.html', context)
 
 
 def movie_review(request, movie_code):
     user = request.user
-    searched_dates = SearchedDate.objects.filter(user_id=user.id)
     movie = Movie.objects.filter(movie_code=movie_code).first()
+    
+    user.clicked_movies.add(movie)
+
+    searched_dates = SearchedDate.objects.filter(user_id=user.id)
+
+    
+
+    
+    clicked_movies = user.clicked_movies.all()
+    
+    
     reviews = movie.reviews.all()
     review_form = ReviewForm()
 
@@ -156,6 +168,7 @@ def movie_review(request, movie_code):
         'reviews': reviews,
         'review_form': review_form,
         'searched_dates': searched_dates,
+        'clicked_movies': clicked_movies,
     }
     return render(request, 'movies/movie_review.html', context)
 

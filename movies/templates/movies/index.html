@@ -66,3 +66,15 @@
 {% endfor %}
 
 {% endblock date %}
+
+
+{% block sidemovie %}
+
+{% for movie in clicked_movies %}
+  <img src="{{ movie.poster_url }}">
+  <a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}</a><br>
+{% endfor %}
+
+{% endblock sidemovie %}
+
+
