@@ -7,4 +7,14 @@
     {{ dateform.month }} 월 {{ dateform.day }} 일
     <button type="submit">로 돌아갈래..ㅠㅠㅠ</button>
   </form>
+
 {% endblock body %}
+
+{% block date %}
+
+{% for date in searched_dates %}
+  <a href="{% url 'movies:movie_list' date.id %}">{{ date.month }}월 {{ date.day }}일<br></a> 
+{% endfor %}
+
+{% endblock date %}
+

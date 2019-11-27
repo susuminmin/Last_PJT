@@ -1,20 +1,38 @@
 {% extends 'base.html' %}
-{% block logo %}영화 검색 후 나올 페이지입니다.
+
+{% block logo %}
+영화 검색 후 나올 페이지입니다.
+<a href="{% url 'movies:index' %}">홈.으.로</a>
 {% endblock logo %}
+
+
 {% block body %}
+
   {{ date.month }}
   {{ date.day }} <br>
-  {{ target }}
-  {% for movie18 in movies %}
-    {% if movie18.rank <= 5 %}
+
+  {% for movie in movies18 %}
+    {% if movie.rank <= 5 %}
     <img src="{{ movie.poster_url }}"><br>
-    {{ movie.rank }}. {{ movie.title }}<br>
+    <a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.rank }}. {{ movie.title }}<br></a>
     {% endif %}
   {% endfor %}
-  {% for movie17 in movies %}
-    {% if movie18.rank <= 5 %}
+
+  {% for movie in movies17 %}
+    {% if movie.rank <= 5 %}
     <img src="{{ movie.poster_url }}"><br>
-    {{ movie.rank }}. {{ movie.title }}<br>
+    <a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.rank }}. {{ movie.title }}<br></a>
     {% endif %}
   {% endfor %}
-  <script>
+
+{% endblock body %}
+
+
+
+{% block date %}
+
+  {% for date in searched_dates %}
+    <a href="{% url 'movies:movie_list' date.id %}">{{ date.month }}월 {{ date.day }}일<br></a> 
+  {% endfor %}
+
+{% endblock date %}

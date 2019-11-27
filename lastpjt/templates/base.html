@@ -341,9 +341,8 @@ $(document).ready(function () {
               </div>
               {% comment %} 클릭한 영화, 날짜를 보여주는 부분 {% endcomment %}
               <h2>날짜</h2>
-              {% for searched_date in searched_dates %}
-                <p>{{ searched_date.date }}</p>
-              {% endfor %}
+              {% block date %}
+              {% endblock date %}
 
               <h2>영화</h2>
               {% for click_movie in clicked_movies %}

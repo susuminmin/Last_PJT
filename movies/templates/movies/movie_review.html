@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block logo %}Movie Review Page{% endblock logo %}
+{% block body %}
+  <h1>{{ movie.title }}</h1>
+  <img src="{{ movie.poster_url }}" alt="image"><br>
+  <br>
+  {{ movie.description }}
+  
+  <h3>Review</h3> 
+  <ul>
+    {% for review in reviews %}
+      <li>{{ review.content }}
+      {{ review.score }}점</li><br>
+    {% endfor %}
+  </ul>
+  <form action="{% url 'movies:review_create' movie.movie_code %}"method="POST">
+    {% csrf_token %}  
+    {{ review_form.as_p }}
+    <button type="submit">작성</button>
+  </form>
+  
+
+{% endblock body %}
+
+{% block date %}
+  {% for date in searched_dates %}
+    <a href="{% url 'movies:movie_list' date.id %}">{{ date.month }}월 {{ date.day }}일<br></a> 
+  {% endfor %}
+
+{% endblock date %}
