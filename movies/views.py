@@ -12,21 +12,19 @@ import csv
 def index(request):
     # 로그인이 되어있을 경우에
     if request.user.is_authenticated:
-        # 사이드바에서 제공할 데이터들
         user = request.user
-        # 사용자가 클릭한 영화들 모두 가져오기  //  사용자가 검색한 날짜들 모두 가져오기
         clicked_movies = user.clicked_movies.all()
-        # clicked_movies = Movie.objects.filter()
-        # searched_dates = user.searched_dates.all()
         searched_dates = SearchedDate.objects.filter(user_id=user.id)
-        # 월/일이 입력되었고, 내용을 담아서 movie_list 페이지로 보내줘야한다
         if request.method == 'POST':
-            dateform = SearchedDateForm(request.POST)
-            if dateform.is_valid():
-                date = dateform.save(commit=False)
-                date.user = request.user
-                date.save()
-                return redirect('movies:movie_list', date.pk)
+            month = request.POST.get('month')
+            day = request.POST.get('day')
+
+            date = SearchedDate()
+            date.month = month
+            date.day = day
+            date.user = request.user
+            date.save()
+            return redirect('movies:movie_list', date.pk)
         else:  # GET 요청
             dateform = SearchedDateForm()
         context = {
@@ -46,22 +44,22 @@ def movie_list(request, date_pk):
     searched_dates = SearchedDate.objects.filter(user_id=user.id)
     # # date정보를 가져옴 (01/23)
     date = get_object_or_404(SearchedDate, pk=date_pk)
-    # date19 = 20190000 + int(date.month + date.day)
-    date18 = 20180000 + int(date.month + date.day)
-    date17 = 20170000 + int(date.month + date.day)
-    date16 = 20160000 + int(date.month + date.day)
-    date15 = 20150000 + int(date.month + date.day)
-    date14 = 20140000 + int(date.month + date.day)
-    date13 = 20130000 + int(date.month + date.day)
-    date12 = 20120000 + int(date.month + date.day)
-    date11 = 20110000 + int(date.month + date.day)
-    date10 = 20100000 + int(date.month + date.day)
-    date09 = 20090000 + int(date.month + date.day)
-    date08 = 20080000 + int(date.month + date.day)
-    date07 = 20070000 + int(date.month + date.day)
-    date06 = 20060000 + int(date.month + date.day)
-    date05 = 20050000 + int(date.month + date.day)
-    date04 = 20040000 + int(date.month + date.day)
+    
+    date18 = 20180000 + int(date.month) * 100 + int(date.day)
+    date17 = 20170000 + int(date.month) * 100 + int(date.day)
+    date16 = 20160000 + int(date.month) * 100 + int(date.day)
+    date15 = 20150000 + int(date.month) * 100 + int(date.day)
+    date14 = 20140000 + int(date.month) * 100 + int(date.day)
+    date13 = 20130000 + int(date.month) * 100 + int(date.day)
+    date12 = 20120000 + int(date.month) * 100 + int(date.day)
+    date11 = 20110000 + int(date.month) * 100 + int(date.day)
+    date10 = 20100000 + int(date.month) * 100 + int(date.day)
+    date09 = 20090000 + int(date.month) * 100 + int(date.day)
+    date08 = 20080000 + int(date.month) * 100 + int(date.day)
+    date07 = 20070000 + int(date.month) * 100 + int(date.day)
+    date06 = 20060000 + int(date.month) * 100 + int(date.day)
+    date05 = 20050000 + int(date.month) * 100 + int(date.day)
+    date04 = 20040000 + int(date.month) * 100 + int(date.day)
     
     movies18 = Movie.objects.filter(
         start_date__lte=date18,

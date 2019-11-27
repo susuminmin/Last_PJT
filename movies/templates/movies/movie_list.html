@@ -8,15 +8,58 @@
 
 {% block body %}
 
-  {{ date.month }}
-  {{ date.day }} <br>
+  {{ date.month }}월 {{ date.day }}일 <br>
 
-  {% for movie in movies18 %}
-    {% if movie.rank <= 5 %}
-    <img src="{{ movie.poster_url }}"><br>
-    <a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.rank }}. {{ movie.title }}<br></a>
-    {% endif %}
-  {% endfor %}
+  <div class="row row-cols-1 row-cols-md-3">
+  <div class="col mb-4">
+    <div class="card">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col mb-4">
+    <div class="card">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col mb-4">
+    <div class="card">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col mb-4">
+    <div class="card">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div class="card">
+    {% for movie in movies18 %}
+      {% if movie.rank <= 5 %}
+        <div class="card-body">Basic card
+          <img src="{{ movie.poster_url }}"><br>
+          <a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.rank }}. {{ movie.title }}<br></a>
+        </div>
+        {% endif %}
+    {% endfor %}
+  </div>
 
   {% for movie in movies17 %}
     {% if movie.rank <= 5 %}
