@@ -126,3 +126,5 @@ STATICFILES_DIRS = [
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
+
+STATIC_ROOT = 'static'
