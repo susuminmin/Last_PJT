@@ -59,6 +59,7 @@
 
 {% endblock body %}
 
+{% comment %} sidebar에 날짜 넣는 부분 {% endcomment %}
 {% block date %}
 
 {% for date in searched_dates %}
@@ -68,11 +69,17 @@
 {% endblock date %}
 
 
+{% comment %} sidebar에 영화 넣는 부분 {% endcomment %}
 {% block sidemovie %}
 
 {% for movie in clicked_movies %}
-  <img src="{{ movie.poster_url }}">
-  <a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}</a><br>
+  <div class="card" style="width: 16rem;">
+    <img src="{{ movie.poster_url }}"><br>
+    <div class="card-body">
+      <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}</a><br></h4>
+    </div>
+  </div>
+  
 {% endfor %}
 
 {% endblock sidemovie %}
