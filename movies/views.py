@@ -145,8 +145,29 @@ def movie_list(request, date_pk):
 
 
 def movie_review(request, movie_code):
+    user = request.user
+    searched_dates = SearchedDate.objects.filter(user_id=user.id)
     movie = Movie.objects.filter(movie_code=movie_code).first()
+    reviews = movie.reviews.all()
+    review_form = ReviewForm()
+
     context = {
-        'movie': movie
+        'movie': movie,
+        'reviews': reviews,
+        'review_form': review_form,
+        'searched_dates': searched_dates,
     }
     return render(request, 'movies/movie_review.html', context)
+
+
+def review_create(request, movie_code):
+    movie = Movie.objects.filter(movie_code=movie_code).first()
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.movie_id = movie.id
+            review.user_id = request.user.id
+            review.save()
+        
+        return redirect('movies:movie_review', movie_code)

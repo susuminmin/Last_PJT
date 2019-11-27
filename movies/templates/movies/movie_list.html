@@ -10,20 +10,21 @@
   {% for movie in movies18 %}
     {% if movie.rank <= 5 %}
     <img src="{{ movie.poster_url }}"><br>
-    {{ movie.rank }}. {{ movie.title }}<br>
+    <a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.rank }}. {{ movie.title }}<br></a>
     {% endif %}
   {% endfor %}
   {% for movie in movies17 %}
     {% if movie.rank <= 5 %}
     <img src="{{ movie.poster_url }}"><br>
-    {{ movie.rank }}. {{ movie.title }}<br>
+    <a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.rank }}. {{ movie.title }}<br></a>
     {% endif %}
   {% endfor %}
   <script>
   </script>
   {% endblock body %}
 
-  {% block date %}
+
+{% block date %}
 
 {% for date in searched_dates %}
   <a href="{% url 'movies:movie_list' date.id %}">{{ date.month }}월 {{ date.day }}일<br></a> 
