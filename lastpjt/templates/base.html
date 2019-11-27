@@ -7,15 +7,61 @@
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <style>
     body {
+      background-image: url(https://i.redd.it/vcu684cde8y01.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
       position: relative;
       overflow-x: hidden;
     }
 
+    h3, h1 {
+      color: #c6bfca;
+      text-weight: bold;
+    }
+
+    label {
+      color: #c6bfca;
+    }
+    
     body,
     html {
       height: 100%;
     }
 
+    #id_content {
+      margin-right: 30px;
+      margin-left: 10px;
+    }
+
+    #id_score {
+      margin-right: 30px;
+      margin-left: 10px;
+    }
+
+    .home {
+      position:fixed;
+      right: 20px;
+      top:20px;
+    }
+
+    .movie_description {
+      background-color: #ffffff24;
+      color: #c7c3c7;
+      text-weight: bold;
+      border-radius: 0.6em;
+    }
+
+    .movie_review {
+      background-color: #ffffff24;
+      color: #c7c3c7;
+      text-weight: bold;
+    }
+
+    .card-title {
+      text-align: center;
+    }
     .nav .open>a,
     .nav .open>a:hover,
     .nav .open>a:focus {
@@ -25,8 +71,13 @@
     /*-------------------------------*/
     /*           Wrappers            */
     /*-------------------------------*/
+
     .title {
+      color: #b9aac1;
       text-align: center;
+      font-family: 'Nanum Gothic', sans-serif;
+      font-weight: bold;
+      font-size: 5.5rem;
     }
 
     #wrapper {
@@ -69,6 +120,8 @@
     .card-img-top {
       width: 110px;
       height: 158px;
+      display: inline-block;
+      margin-left: 28px;
     }
 
     #wrapper.toggled #sidebar-wrapper {
@@ -340,6 +393,8 @@
       % endblock style %
     }
   </style>
+  <link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Nanum+Gothic|Nanum+Myeongjo|Noto+Serif+KR&display=swap" rel="stylesheet">
+</head>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
   <script>
@@ -369,6 +424,8 @@
     });
   </script>
   </body>
+  {% comment %} navbar 시험용 {% endcomment %}
+
   <div id="wrapper">
     <div class="overlay"></div>
     <!-- Sidebar 숨김으로 보였다 보이지 않았다 하는 부분 -->
@@ -402,7 +459,9 @@
     </nav>
     <!-- /#sidebar-wrapper -->
     <!-- Page Content -->
-    <a href="{% url 'movies:index' %}">홈.으.로</a>
+    <div class="home">
+      <a href="{% url 'movies:index' %}"><span class="glyphicon glyphicon-home fa-lg"></span></a>
+    </div>
     <div id="page-content-wrapper">
       <button type="button" class="link2me is-closed" data-toggle="offcanvas">
         <span class="hamb-top"></span>

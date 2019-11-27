@@ -1,22 +1,44 @@
 {% extends 'base.html' %}
-{% block logo %}Movie Review Page{% endblock logo %}
 {% block body %}
   <h1>{{ movie.title }}</h1>
-  <img src="{{ movie.poster_url }}" alt="image"><br>
+  <img src="{{ movie.poster_url }}" alt="image" style="width: 100%"><br>
   <br>
-  {{ movie.description }}
+  <div class="movie_description">
+    {{ movie.description }}
+  </div>
   
   {% comment %} 리뷰 작성 {% endcomment %}
+  <br>
+  <br>
+  <hr>
   <h3>Review</h3> 
   <ul>
     {% for review in reviews %}
+      <div class="movie_review">
       <li>{{ review.content }}
-      {{ review.score }}점</li><br>
+      {% if review.score == 1 %}
+      ★☆☆☆☆
+      {% endif %}
+      {% if review.score == 2  %}
+      ★★☆☆☆
+      {% endif %}
+      {% if review.score == 3  %}
+      ★★★☆☆
+      {% endif %}
+      {% if review.score == 4  %}
+      ★★★★☆
+      {% endif %}
+      {% if review.score == 5  %}
+      ★★★★★
+      {% endif %}
+      </li><br>
+      </div>
     {% endfor %}
   </ul>
-  <form action="{% url 'movies:review_create' movie.movie_code %}"method="POST">
-    {% csrf_token %}  
-    {{ review_form.as_p }}
+  <hr>
+  <form action="{% url 'movies:review_create' movie.movie_code %}"method="POST" style="width:100%">
+    {% csrf_token %}
+    {{ review_form }}
     <button type="submit">작성</button>
   </form>
   
