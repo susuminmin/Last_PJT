@@ -6,6 +6,7 @@
   <br>
   {{ movie.description }}
   
+  {% comment %} 리뷰 작성 {% endcomment %}
   <h3>Review</h3> 
   <ul>
     {% for review in reviews %}
@@ -22,6 +23,7 @@
 
 {% endblock body %}
 
+{% comment %} sidebar에 사용자가 검색한 날짜가 자동으로 업데이트됨 {% endcomment %}
 {% block date %}
   {% for date in searched_dates %}
     <a href="{% url 'movies:movie_list' date.id %}">{{ date.month }}월 {{ date.day }}일<br></a> 
