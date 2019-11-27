@@ -305,7 +305,7 @@ with open('movie.csv', 'w', encoding='utf-8') as f:
 
 ---
 
-  `Day03` 2019-11-25 (월)
+> `Day03` 2019-11-25 (월)
 
 ## 1. Model 및 Form 정의
 
@@ -1056,5 +1056,422 @@ def movie_list(request, date_pk):
 {% block body %}
   성원아... {{ date.month }}월 {{ date.day }}일이야... 
 {% endblock body %}
+```
+
+---
+
+
+
+> `Day04` 2019-11-26 (화)
+
+## 1. 네이버API를 통한 데이터 수집 완성
+
+```python
+import requests
+from pprint import pprint
+from decouple import config
+import csv
+import bs4
+from bs4 import BeautifulSoup
+import os
+import django
+from django.db import transaction
+
+
+# django setting 파일 설정하기 및 장고 셋업
+cur_dir = os.path.dirname(__file__)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "lastpjt.settings")
+django.setup()
+# 모델 임포트는 django setup이 끝난 후에 가능하다. 셋업 전에 import하면 에러난다. db connection 정보가 없어서......
+from movies.models import Movie
+
+
+BASE_URL = 'https://openapi.naver.com/v1/search/movie.json'
+clientId = config('CLIENT_ID')
+clientSecret = config('CLIENT_SECRET')
+HEADERS = {
+    'X-Naver-Client-Id': clientId,
+    'X-Naver-Client-Secret': clientSecret,
+}
+
+query_dict = {} 
+# 빈 qurey_dict 에 XXXXX (영화제목 값) 을 key로, {'영화코드': XXXXXXXX} 를 value 로 하는 자료 추가할 것 
+with open('movie.csv', 'r', newline='', encoding='utf-8') as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        query_dict[row['기간순위']] = {
+            '순위': row['순위'],
+            # '기간': row['기간'],
+            '기간시작': row['기간시작'],
+            '기간종료': row['기간종료'],
+            '영화코드': row['영화코드'],
+            '영화명(국문)': row['영화명(국문)'],
+            '기간순위': row['기간순위'],
+            }
+
+# 네이버에서 영화에 맞는 줄거리와 포스터url를 받아와서 dict에 합친 후,
+# model.py의 MakeDB모델을 거쳐 우리 DB에 저장한다
+fieldnames = ('순위', '기간시작', '기간종료', '썸네일_이미지의_URL', '영화명(국문)', '영화코드', '하이퍼텍스트_링크', '줄거리')
+with open('movie_naver.csv', 'w', encoding='utf-8', newline='') as f:
+    writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
+    writer.writeheader()
+
+    for week_rank, movie_dict in query_dict.items(): # key 값에 대한 for문
+        movie_title = movie_dict['영화명(국문)']
+
+        API_URL = f'{BASE_URL}?query={movie_title}'
+        response = requests.get(API_URL, headers=HEADERS).json()
+        
+        try:
+            link = response.get('items')[0].get('link')
+            thumb_url = response.get('items')[0].get('image')
+            movie_dict['하이퍼텍스트_링크'] = link
+            movie_dict['썸네일_이미지의_URL'] = thumb_url
+            # pprint(movie_dict)
+            
+            hyp_link = requests.get(link)
+            # print(hyp_link.status_code)  /  200 -> 요청이 제대로 가짐
+            # print('2', hyp_link)  /  200 -> 요청이 제대로 가짐
+            html = hyp_link.text  # 응답받은 객체에서 html문서를 string으로 바꾸는 것
+            soup = bs4.BeautifulSoup(html, 'html.parser')
+            # print(soup)
+            content = soup.select_one('div.story_area p.con_tx')
+            movie_dict['줄거리'] = content.text
+
+        except:
+            pass
+
+        writer.writerow(movie_dict)
+
+        @transaction.atomic
+        def make_model():
+            movie = Movie()
+            try:
+                movie.start_date = movie_dict['기간시작']
+            except:
+                pass
+            try:
+                movie.end_date = movie_dict['기간종료']
+            except:
+                pass
+            try:
+                movie.rank = movie_dict['순위']
+            except:
+                pass
+            try:
+                movie.poster_url = movie_dict['썸네일_이미지의_URL']
+            except:
+                pass
+            try:
+                movie.title = movie_dict['영화명(국문)']
+            except:
+                pass
+            try:
+                movie.movie_code = movie_dict['영화코드']
+            except:
+                pass
+            try:
+                movie.naver_movie_url = movie_dict['하이퍼텍스트_링크']
+            except:
+                pass
+            try:
+                movie.description = movie_dict['줄거리']
+            except:
+                pass
+            
+            movie.save()
+
+        if __name__ == "__main__":
+            make_model()
+            
+```
+
+* 기존에 영화진흥위원회 API 로 생성한 `movie.csv` 파일을 읽어온 후, 네이버 API 에서 추가적인 정보를 수집하여 `movie_naver.csv` 파일을 생성함과 동시에
+* `movies` > `models.py` 에서 정의한 `Movie` 모델에 데이터를 업데이트한다. 
+
+
+
+## 2. movie_list 페이지 완성
+
+### 2-1 `movie_list.py`
+
+```python
+def movie_list(request, date_pk):
+    user = request.user
+    searched_dates = SearchedDate.objects.filter(user_id=user.id)
+    # # date정보를 가져옴 (01/23)
+    date = get_object_or_404(SearchedDate, pk=date_pk)
+    # date19 = 20190000 + int(date.month + date.day)
+    date18 = 20180000 + int(date.month + date.day)
+    date17 = 20170000 + int(date.month + date.day)
+    date16 = 20160000 + int(date.month + date.day)
+    date15 = 20150000 + int(date.month + date.day)
+    date14 = 20140000 + int(date.month + date.day)
+    date13 = 20130000 + int(date.month + date.day)
+    date12 = 20120000 + int(date.month + date.day)
+    date11 = 20110000 + int(date.month + date.day)
+    date10 = 20100000 + int(date.month + date.day)
+    date09 = 20090000 + int(date.month + date.day)
+    date08 = 20080000 + int(date.month + date.day)
+    date07 = 20070000 + int(date.month + date.day)
+    date06 = 20060000 + int(date.month + date.day)
+    date05 = 20050000 + int(date.month + date.day)
+    date04 = 20040000 + int(date.month + date.day)
+    
+    movies18 = Movie.objects.filter(
+        start_date__lte=date18,
+        end_date__gte=date18,
+    )
+    movies17 = Movie.objects.filter(
+        start_date__lte=date17,
+        end_date__gte=date17,
+    )
+    movies16 = Movie.objects.filter(
+        start_date__lte=date16,
+        end_date__gte=date16,
+    )
+    movies15 = Movie.objects.filter(
+        start_date__lte=date15,
+        end_date__gte=date15,
+    )
+    movies14 = Movie.objects.filter(
+        start_date__lte=date14,
+        end_date__gte=date14,
+    )
+    movies13 = Movie.objects.filter(
+        start_date__lte=date13,
+        end_date__gte=date13,
+    )
+    movies12 = Movie.objects.filter(
+        start_date__lte=date12,
+        end_date__gte=date12,
+    )
+    movies11 = Movie.objects.filter(
+        start_date__lte=date11,
+        end_date__gte=date11,
+    )
+    movies10 = Movie.objects.filter(
+        start_date__lte=date10,
+        end_date__gte=date10,
+    )
+    movies09 = Movie.objects.filter(
+        start_date__lte=date09,
+        end_date__gte=date09,
+    )
+    movies08 = Movie.objects.filter(
+        start_date__lte=date08,
+        end_date__gte=date08,
+    )
+    movies07 = Movie.objects.filter(
+        start_date__lte=date07,
+        end_date__gte=date07,
+    )
+    movies06 = Movie.objects.filter(
+        start_date__lte=date06,
+        end_date__gte=date06,
+    )
+    movies05 = Movie.objects.filter(
+        start_date__lte=date05,
+        end_date__gte=date05,
+    )
+    movies04 = Movie.objects.filter(
+        start_date__lte=date04,
+        end_date__gte=date04,
+    )
+
+    context = {
+        'date': date,
+        'movies18': movies18,
+        'movies17': movies17,
+        'movies16': movies16,
+        'movies15': movies15,
+        'movies14': movies14,
+        'movies13': movies13,
+        'movies12': movies12,
+        'movies11': movies11,
+        'movies10': movies10,
+        'movies09': movies09,
+        'movies08': movies08,
+        'movies07': movies07,
+        'movies06': movies06,
+        'movies05': movies05,
+        'movies04': movies04,
+        'searched_dates': searched_dates,
+    }
+    return render(request, 'movies/movie_list.html', context)
+
+```
+
+
+
+### 2-2 `movie_list.html`
+
+```html
+{% extends 'base.html' %}
+
+{% block logo %}
+영화 검색 후 나올 페이지입니다.
+<a href="{% url 'movies:index' %}">홈.으.로</a>
+{% endblock logo %}
+
+
+{% block body %}
+
+  {{ date.month }}
+  {{ date.day }} <br>
+
+  {% for movie in movies18 %}
+    {% if movie.rank <= 5 %}
+    <img src="{{ movie.poster_url }}"><br>
+    <a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.rank }}. {{ movie.title }}<br></a>
+    {% endif %}
+  {% endfor %}
+
+  {% for movie in movies17 %}
+    {% if movie.rank <= 5 %}
+    <img src="{{ movie.poster_url }}"><br>
+    <a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.rank }}. {{ movie.title }}<br></a>
+    {% endif %}
+  {% endfor %}
+
+{% endblock body %}
+
+
+
+{% block date %}
+
+  {% for date in searched_dates %}
+    <a href="{% url 'movies:movie_list' date.id %}">{{ date.month }}월 {{ date.day }}일<br></a> 
+  {% endfor %}
+
+{% endblock date %}
+
+```
+
+- 2018, 2017년의 사용자가 선택한 월/일 기간의 박스오피스 순위 영화 목록을 보여주는 페이지
+
+
+
+## 3. movie_review 페이지 연동
+
+### 3-1. `views.py`
+
+```python
+# movie_review
+
+def movie_review(request, movie_code):
+    user = request.user
+    searched_dates = SearchedDate.objects.filter(user_id=user.id)
+    movie = Movie.objects.filter(movie_code=movie_code).first()
+    reviews = movie.reviews.all()
+    review_form = ReviewForm()
+
+    context = {
+        'movie': movie,
+        'reviews': reviews,
+        'review_form': review_form,
+        'searched_dates': searched_dates,
+    }
+    return render(request, 'movies/movie_review.html', context)
+```
+
+```python
+# review_create
+
+def review_create(request, movie_code):
+    movie = Movie.objects.filter(movie_code=movie_code).first()
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.movie_id = movie.id
+            review.user_id = request.user.id
+            review.save()
+        
+        return redirect('movies:movie_review', movie_code)
+```
+
+
+
+### 3-2. `movie_review.html` 
+
+```html
+{% extends 'base.html' %}
+{% block logo %}Movie Review Page{% endblock logo %}
+{% block body %}
+  <h1>{{ movie.title }}</h1>
+  <img src="{{ movie.poster_url }}" alt="image"><br>
+  <br>
+  {{ movie.description }}
+  
+  {% comment %} 리뷰 작성 {% endcomment %}
+  <h3>Review</h3> 
+  <ul>
+    {% for review in reviews %}
+      <li>{{ review.content }}
+      {{ review.score }}점</li><br>
+    {% endfor %}
+  </ul>
+  <form action="{% url 'movies:review_create' movie.movie_code %}"method="POST">
+    {% csrf_token %}  
+    {{ review_form.as_p }}
+    <button type="submit">작성</button>
+  </form>
+  
+
+{% endblock body %}
+
+{% comment %} sidebar에 사용자가 검색한 날짜가 자동으로 업데이트됨 {% endcomment %}
+{% block date %}
+  {% for date in searched_dates %}
+    <a href="{% url 'movies:movie_list' date.id %}">{{ date.month }}월 {{ date.day }}일<br></a> 
+  {% endfor %}
+
+{% endblock date %}
+```
+
+- 영화 코드를 기준으로, 가장 첫 번째 영화에 review를 작성할 수 있도록 구현
+
+- 댓글과 점수를 남길 수 있다.
+
+  
+
+## 4. 검색한 날짜를 모두 띄우는 기능 구현
+
+### 4-1 `index.html`
+
+```python
+# 사이드바에 기존에 검색한 날짜 목록을 띄운 후, 해당 날짜를 클릭하면 검색 결과로 이동하도록 설정
+
+def index(request):
+    # 로그인이 되어있을 경우에
+    if request.user.is_authenticated:
+        # 사이드바에서 제공할 데이터들
+        user = request.user
+        # 사용자가 클릭한 영화들 모두 가져오기  //  사용자가 검색한 날짜들 모두 가져오기
+        clicked_movies = user.clicked_movies.all()
+        # clicked_movies = Movie.objects.filter()
+        # searched_dates = user.searched_dates.all()
+        searched_dates = SearchedDate.objects.filter(user_id=user.id)
+        # 월/일이 입력되었고, 내용을 담아서 movie_list 페이지로 보내줘야한다
+        if request.method == 'POST':
+            dateform = SearchedDateForm(request.POST)
+            if dateform.is_valid():
+                date = dateform.save(commit=False)
+                date.user = request.user
+                date.save()
+                return redirect('movies:movie_list', date.pk)
+        else:  # GET 요청
+            dateform = SearchedDateForm()
+        context = {
+            'clicked_movies': clicked_movies,
+            'searched_dates': searched_dates,
+            'dateform': dateform,
+        }
+        return render(request, 'movies/index.html', context)
+    # 로그인 X 유저일 경우 아예 아무 것도 못 함
+    else:
+        dateform = SearchedDateForm()
+        return render(request, 'movies/index.html', {'dateform': dateform})
 ```
 

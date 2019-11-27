@@ -62,10 +62,7 @@ def movie_list(request, date_pk):
     date06 = 20060000 + int(date.month + date.day)
     date05 = 20050000 + int(date.month + date.day)
     date04 = 20040000 + int(date.month + date.day)
-<<<<<<< HEAD
-
-=======
->>>>>>> 4542daa0ecee48e664fbf8cdcd9bd5827d131e0a
+    
     movies18 = Movie.objects.filter(
         start_date__lte=date18,
         end_date__gte=date18,
@@ -126,10 +123,7 @@ def movie_list(request, date_pk):
         start_date__lte=date04,
         end_date__gte=date04,
     )
-<<<<<<< HEAD
 
-=======
->>>>>>> 4542daa0ecee48e664fbf8cdcd9bd5827d131e0a
     context = {
         'date': date,
         'movies18': movies18,
