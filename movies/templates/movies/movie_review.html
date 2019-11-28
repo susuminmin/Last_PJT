@@ -8,12 +8,14 @@
   <h1>{{ movie.title }}</h1>
   <h3 style="color:darkgray">({{ movie.subtitle }})</h3>
   <a href="{{ movie.naver_movie_url }}"><img class="naver_logo" src="{% static 'naver_logo.png' %}" width=40px height=40px><br></a>
+  <div class="actor">
+  {{ movie.actor }}
   <hr>
+  </div>
   <img src="{{ movie.poster_url }}" alt="image" style="width: 100%"><br>
   <br>
   <div class="movie_description">
     {{ movie.description }}
-    {{ movie.actor }}
   </div>
   
   {% comment %} 리뷰 작성 {% endcomment %}
