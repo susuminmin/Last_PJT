@@ -1477,7 +1477,253 @@ def index(request):
 
 
 
+
+
 ---------------------------------------
 
 > `Day05` 2019-11-27 (수)
+
+## 1. 리뷰 페이지에 접속한 영화를 sidebar에 표시하는 기능 구현 
+
+* `index.html` 및 `movie_list.html` , `movie_review.html` 각각에 side-bar 표시할 내용 입력
+
+```html
+...
+{% block date %}
+
+{% for date in searched_dates %}
+  <a href="{% url 'movies:movie_list' date.id %}" class="sidebar_date">{{ date.month }}월 {{ date.day }}일<br></a> 
+{% endfor %}
+
+{% endblock date %} 
+
+
+{% comment %} sidebar에 영화 넣는 부분 {% endcomment %}
+{% block sidemovie %}
+
+{% for movie in clicked_movies %}
+  
+  <img src="{{ movie.poster_url }}" class="sidebar_card"><br>
+  <div class="card-body">
+    <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}</a><br></h4>
+  </div>
+  
+{% endfor %}
+
+{% endblock sidemovie %}
+
+```
+
+
+
+## 2. `movie_list.html` 에서 영화 카드 배치 수정
+
+* `movie_list.html` 의 `{% block body %}` 와 `{% endblock body %}` 사이에 2018년부터 2004년까지 영화 정보 표시
+
+```html
+{% extends 'base.html' %}
+{% block logo %}
+<div class="title">
+  {{ date.month }}월 {{ date.day }}일의 영화 순위
+</div>
+{% endblock logo %}
+
+{% block body %}
+<div class="container">
+  <p><h3>2018년 Top4</h3></p>
+  {% for movie in movies18 %}
+  {% if movie.rank <= 4 %}
+  <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
+    <div class="card bg-white" style="width: 16rem;">
+      <img src="{{ movie.poster_url }}" class="card-img-top">
+      <div class="card-body">
+        <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
+        </h4>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+
+...
+
+{% endblock body %}
+
+```
+
+
+
+## 3. movies 앱 내 배경 이미지 삽입
+
+### 3-1. `base.html` css style 추가
+
+```html
+    body {
+      background-image: url(https://i.redd.it/vcu684cde8y01.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+    }
+```
+
+
+
+
+
+
+
+---
+
+> `DAY1` 2019-11-28 (목)
+
+## 1. 로그인 및 회원가입 페이지 css style 적용
+
+### 1-1. `accounts` > `forms.py`
+
+```python
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import get_user_model
+from django import forms
+
+
+class CustomUserCreationForm(UserCreationForm):
+
+    username = forms.CharField(
+        label='Username',
+        max_length=254,
+    )
+    password1 = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput
+    )
+
+    password2 = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput
+    )
+
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'password1', 'password2']
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+
+    username = forms.CharField(
+        label='Username',
+        max_length=254,
+    )
+    password = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput
+    )
+
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'password', ]
+```
+
+* 커스터마이징 하기 위해 form 세부정보를 지정
+* `accounts` > `views.py` 에서도 `CustomAuthenticationForm` 및 `CustomUserCreationForm` 사용
+
+
+
+### 1-2. `login.html` 
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Template</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    body {
+      background-image: url(https://i.redd.it/vcu684cde8y01.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div class="home">
+    <a href="{% url 'movies:index' %}"><span class="glyphicon glyphicon-home fa-lg"></span></a>
+  </div>
+
+  <h2 style="color: #c6bfca">로그인</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <p style="color: #c6bfca">
+    Username {{ empty }}{{ form.username }}<br>{{ empty }}
+    Password {{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ form.password }}
+    </p>
+    <button type="submit">로그인</button>
+  </form>
+
+...
+    
+</body>
+</html>
+```
+
+
+
+### 1-3. `signup.html`
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Template</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    body {
+      background-image: url(https://i.redd.it/vcu684cde8y01.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 style="color: #c6bfca">회원가입</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <p style="color: #c6bfca">
+    Username {{ empty }}{{ form.username }}<br>{{ empty }}
+    Password {{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ form.password1 }}
+    Repeat Password {{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ form.password2 }}
+
+    </p>
+    <button type="submit">회원가입</button>
+  </form>
+
+    ...
+    
+</body>
+</html>
+```
+
+---
 
