@@ -10,11 +10,10 @@
   {% for movie in movies18 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card bg-white" style="width: 16rem;">
+    <div class="card-body">
+      <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
-      <div class="card-body">
-        <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
-        </h4>
+        <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br></h4>
       </div>
     </div>
   </div>
@@ -26,7 +25,7 @@
   {% for movie in movies17 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -42,7 +41,7 @@
   {% for movie in movies16 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -58,7 +57,7 @@
   {% for movie in movies15 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -74,7 +73,7 @@
   {% for movie in movies14 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -90,7 +89,7 @@
   {% for movie in movies13 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -106,7 +105,7 @@
   {% for movie in movies12 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -122,7 +121,7 @@
   {% for movie in movies11 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -138,7 +137,7 @@
   {% for movie in movies10 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -154,7 +153,7 @@
   {% for movie in movies09 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -170,7 +169,7 @@
   {% for movie in movies08 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -186,7 +185,7 @@
   {% for movie in movies07 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -202,7 +201,7 @@
   {% for movie in movies06 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -218,7 +217,7 @@
   {% for movie in movies05 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
@@ -234,7 +233,7 @@
   {% for movie in movies04 %}
   {% if movie.rank <= 4 %}
   <div class="b-blcok col-xl-3 col-lg-3 col-md-3 col-3">
-    <div class="card" style="width: 16rem;">
+    <div class="card">
       <img src="{{ movie.poster_url }}" class="card-img-top">
       <div class="card-body">
         <h4 class="card-title"><a href="{% url 'movies:movie_review' movie.movie_code %}">{{ movie.title }}<br></a><br>
