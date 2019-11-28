@@ -223,3 +223,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/venv,python,django,windows,visualstudiocode
+staticfiles/   
