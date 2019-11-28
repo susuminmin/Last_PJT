@@ -1475,3 +1475,9 @@ def index(request):
         return render(request, 'movies/index.html', {'dateform': dateform})
 ```
 
+
+
+---------------------------------------
+
+> `Day05` 2019-11-27 (수)
+

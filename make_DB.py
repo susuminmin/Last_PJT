@@ -16,8 +16,12 @@ django.setup()
 # 모델 임포트는 django setup이 끝난 후에 가능하다. 셋업 전에 import하면 에러난다. db connection 정보가 없어서......
 from movies.models import Movie
 
-
+# 네이버에서 영화 줄거리 가져오는 주소
 BASE_URL = 'https://openapi.naver.com/v1/search/movie.json'
+# 네이버에서 영화 포스터 가져오는 주소
+BASE_IMAGE_URL = 'https://movie.naver.com/movie/bi/mi/photoViewPopup.nhn?movieCode='
+
+
 clientId = config('CLIENT_ID')
 clientSecret = config('CLIENT_SECRET')
 HEADERS = {
@@ -55,9 +59,22 @@ with open('movie_naver.csv', 'w', encoding='utf-8', newline='') as f:
         
         try:
             link = response.get('items')[0].get('link')
-            thumb_url = response.get('items')[0].get('image')
+            # print(link)
+            temp = link.split('=')
+            naver_poster_code = temp[-1]
+            # print(naver_poster_code)
+
+            # 왕큰이미지를 띄우는 팝업링크
+            thumb_url = BASE_IMAGE_URL + naver_poster_code
+            hyp_link2 = requests.get(thumb_url)
+            html2 = hyp_link2.text
+            soup2 = bs4.BeautifulSoup(html2, 'html.parser')
+            poster_url = soup2.a.img['src']
             movie_dict['하이퍼텍스트_링크'] = link
-            movie_dict['썸네일_이미지의_URL'] = thumb_url
+            # print(poster_url)
+
+
+            movie_dict['썸네일_이미지의_URL'] = poster_url
             # pprint(movie_dict)
             
             hyp_link = requests.get(link)

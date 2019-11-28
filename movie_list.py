@@ -16,7 +16,7 @@ with open('movie.csv', 'w', encoding='utf-8') as f:
     for i in range(1000):
         targetDt = datetime(2019, 11, 17) - timedelta(weeks=i)
         targetDt = targetDt.strftime('%Y%m%d')
-        API_URL = f'{BASE_URL}?key={key}&targetDt={targetDt}&weekGb=0'
+        API_URL = f'{BASE_URL}?key={key}&targetDt={targetDt}&weekGb=0&itemPerPage=4'
 
         response = requests.get(API_URL)
         data = response.json()
