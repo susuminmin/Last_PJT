@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -31,7 +31,7 @@ def login(request):
     if request.user.is_authenticated:
         return redirect('movies:index')
     if request.method == "POST":
-        form = AuthenticationForm(request, request.POST)
+        form = CustomAuthenticationForm(request, request.POST)
         # 로그인 로직
         if form.is_valid():
             next_page = request.GET.get('next')  # url 붙은 str 꺼낼 때
@@ -41,8 +41,12 @@ def login(request):
             return redirect(next_page or 'movies:index')
     else:
         # 로그인 = 세션 데이터 만드는 것 => UserCreationForm 사용 X AuthenticationForm 사용 O
-        form = AuthenticationForm()
-    context = {'form': form}
+        form = CustomAuthenticationForm()
+    empty = '  '
+    context = {
+        'empty': empty,
+        'form': form
+        }
     return render(request, 'accounts/login.html', context)
 
 

@@ -8,13 +8,27 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    body {
+      background-image: url(https://i.redd.it/vcu684cde8y01.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+    }
+  </style>
 </head>
 <body>
 
-  <h1>로그인</h1>
+  <h2 style="color: #c6bfca">로그인</h2>
   <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+    <p style="color: #c6bfca">
+    Username {{ empty }}{{ form.username }}<br>{{ empty }}
+    Password {{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ form.password }}
+    </p>
     <button type="submit">로그인</button>
   </form>
 
