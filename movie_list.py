@@ -9,7 +9,7 @@ key = config('API_KEY')
 weekGb = '0'
 
 with open('movie.csv', 'w', encoding='utf-8') as f:
-    fieldnames = ['순위', '기간', '영화코드', '영화명(국문)', '기간순위', '기간시작', '기간종료']
+    fieldnames = ['순위', '기간', '영화코드', '영화명(국문)', '기간순위', '기간시작', '기간종료', '개봉일']
     writer = csv.DictWriter(f, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -39,6 +39,7 @@ with open('movie.csv', 'w', encoding='utf-8') as f:
                 '영화코드': movie.get('movieCd'),
                 '영화명(국문)': movie.get('movieNm'),
                 '순위': movie.get('rank'),
+                '개봉일': movie.get('openDt'),
             }
 
         for item in movie_data.values():
