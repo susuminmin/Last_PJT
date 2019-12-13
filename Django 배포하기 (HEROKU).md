@@ -35,7 +35,7 @@
    - SECRET_KEY / DEBUG  -> env설정
 
 7. 헤로쿠 홈페이지 -> ` https://devcenter.heroku.com/articles/heroku-cli ` 들어오기
-   : 검색에서 heroku cli 검색 후, 두번째 탭 -> gerodu.cli 클릭
+   : 검색에서 heroku cli 검색 후, 두번째 탭 -> heroku.cli 클릭
    windows-64bit 다운
 
 8. vscode 모두 다 껐다가 킨 후, heroku라고 쳤을 때, 인식하면 정상적으로 설치된 것
@@ -50,10 +50,6 @@
     - settings -> config vars 에서 Reveal Config Vars 클릭 -> SETCRET_KEY , DEBUG value 입력
 12. git bash로 와서
     - git add . / git commit / `$ git push heroku heroku:master` (우리는 지금 heroku 브랜치인데, heroku라는 이름으로 master 브랜치에 올리겠다)
-
-​    
-
-
 
   
 
