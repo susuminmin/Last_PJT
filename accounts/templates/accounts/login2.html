@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -168,11 +169,14 @@
 </head>
 
 <body>
+
+  <h2>Modal Login Form</h2>
+
   <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
 
   <div id="id01" class="modal">
 
-    <form class="modal-content animate" method="post">
+    <form class="modal-content animate" action="/action_page.php" method="post">
       {% csrf_token %}
 
       <div class="imgcontainer">
@@ -180,20 +184,19 @@
       </div>
 
       <div class="form-group">
-        <label for="{{ form.username.id_for_label }}"><b>Username</b></label>
+        <label for="{{ form.username.id_for_label }}">Username</label>
         <input placeholder="Enter Username" class="form-control" id="{{ form.username.id_for_label }}" maxlength="15"
           name="{{ form.username.html_name }}" type="text" />
       </div>
 
       <div class="form-group">
-        <label for="{{ form.password.id_for_label }}"><b>Password</b></label>
+        <label for="{{ form.password.id_for_label }}">Password</label>
         <input placeholder="Enter Password" class="form-control" id="{{ form.password.id_for_label }}" maxlength="120"
           name="{{ form.password.html_name }}" type="password" />
       </div>
 
       <input type="submit" class="save btn btn-primary" value="Login">
     </form>
-
   </div>
 
   <script>
