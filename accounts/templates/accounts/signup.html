@@ -1,49 +1,135 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Template</title>
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <style>
-    body {
-      background-image: url(https://i.redd.it/vcu684cde8y01.jpg);
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      position: relative;
-      overflow-x: hidden;
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  
+<style>
+
+body {
+  margin-top: 100px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: url(https://i.redd.it/vcu684cde8y01.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
     }
-  </style>
+
+
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.signup_card {
+  width: 24%;
+  top: 50%;
+  left: 50%;
+  margin: auto;  
+}
+
+button {
+  background-color: #2E2E2E;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
+</style>
 </head>
 <body>
 
-  <h2 style="color: #c6bfca">회원가입</h2>
-  <form method="POST">
+<div class="signup_card">
+  <form method="post">
     {% csrf_token %}
-    <p style="color: #c6bfca">
-    Username {{ empty }}{{ form.username }}<br>{{ empty }}
-    Password {{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ form.password1 }}
-    Repeat Password {{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ empty }}{{ form.password2 }}
 
-    </p>
-    <button type="submit">회원가입</button>
+    <div class="form-group">
+      <label for="{{ form.username.id_for_label }}"><b style="color: #F2F2F2">　Username</b></label>
+      <input placeholder="Enter Username" class="form-control" id="{{ form.username.id_for_label }}" maxlength="15"
+        name="{{ form.username.html_name }}" type="text" />
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.password11.id_for_label }}"><b style="color: #F2F2F2">　Password</b></label>
+      <input placeholder="Enter Password" class="form-control" id="{{ form.password1.id_for_label }}" maxlength="120"
+        name="{{ form.password1.html_name }}" type="password" />
+    </div>
+
+    
+    <div class="form-group">
+      <label for="{{ form.password22.id_for_label }}"><b style="color: #F2F2F2">　Repeat Password</b></label>
+      <input placeholder="Check Password" class="form-control" id="{{ form.password2.id_for_label }}" maxlength="120"
+        name="{{ form.password2.html_name }}" type="password" />
+    </div>
+          
+      <button type="submit">Sign up</button>
+    </div>
   </form>
+</div>
 
+<!-- Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+  crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+  crossorigin="anonymous"></script>
 
-  <!-- Bootstrap JavaScript -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
 </body>
 </html>
