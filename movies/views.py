@@ -19,11 +19,19 @@ def index(request):
         if request.method == 'POST':
             month = request.POST.get('month')
             day = request.POST.get('day')
+            last_dates = SearchedDate.objects.filter(user_id=user.id)
+
+            # 기존 검색해 본 날짜를 돌면서, 중복된 검색 날짜가 있으면 바로 그 날짜를 검색하게 한다. 
+            for date in last_dates:
+                if date.month == month and date.day == day:
+                    return redirect('movies:movie_list', date.pk)    
+
             date = SearchedDate()
             date.month = month
             date.day = day
             date.user = request.user
             date.save()
+            
             return redirect('movies:movie_list', date.pk)
         else:  # GET 요청
             dateform = SearchedDateForm()
@@ -148,17 +156,20 @@ def movie_list(request, date_pk):
 
 def movie_review(request, movie_code):
     user = request.user
+    
+    # 내가 클릭한 영화 (현재)
     movie = Movie.objects.filter(movie_code=movie_code).first()
+
+    # 내(user)가 기존에 클릭해 본 영화들 
+    clicked_movies = user.clicked_movies.all()
+
+    for last_movie in clicked_movies:
+        if last_movie.title == movie.title:
+            return redirect('movies:movie_review', movie_code)
     
     user.clicked_movies.add(movie)
-
-    searched_dates = SearchedDate.objects.filter(user_id=user.id)
-
-    
-
-    
+    searched_dates = SearchedDate.objects.filter(user_id=user.id)    
     clicked_movies = user.clicked_movies.all()
-    
     
     reviews = movie.reviews.all()
     review_form = ReviewForm()
