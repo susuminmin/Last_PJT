@@ -163,11 +163,14 @@ def movie_review(request, movie_code):
     # 내(user)가 기존에 클릭해 본 영화들 
     clicked_movies = user.clicked_movies.all()
 
+    flag = False
     for last_movie in clicked_movies:
         if last_movie.title == movie.title:
-            return redirect('movies:movie_review', movie_code)
-    
-    user.clicked_movies.add(movie)
+            flag = True
+
+    if flag == False: # 지금 클릭한 영화가 처음 클릭한 영화인 경우
+       user.clicked_movies.add(movie)
+
     searched_dates = SearchedDate.objects.filter(user_id=user.id)    
     clicked_movies = user.clicked_movies.all()
     
