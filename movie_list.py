@@ -5,11 +5,14 @@ from datetime import datetime, timedelta
 from decouple import config
 
 BASE_URL = 'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.json'
+
+DETAIL_BASE_URL = 'http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json'
+
 key = config('API_KEY')
 weekGb = '0'
 
 with open('movie.csv', 'w', encoding='utf-8') as f:
-    fieldnames = ['순위', '기간', '영화코드', '영화명(국문)', '기간순위', '기간시작', '기간종료', '개봉일']
+    fieldnames = ['순위', '기간', '영화코드', '영화명(국문)', '기간순위', '기간시작', '기간종료', '개봉일', '감독명(국문)', '감독명(영문)']
     writer = csv.DictWriter(f, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -21,16 +24,26 @@ with open('movie.csv', 'w', encoding='utf-8') as f:
         response = requests.get(API_URL)
         data = response.json()
         movie_data = {}
-
+        # pprint(data)
         showRange = data['boxOfficeResult']['showRange']
         start = int(showRange[:8])
         end = int(showRange[9:])
-        # start = 20191117
-        print(start)
-        print(end)
 
         for movie in data['boxOfficeResult']['weeklyBoxOfficeList']:
-            # pprint(movie)
+            movieCd = movie.get('movieCd')
+            API_DETAIL_URL = f'{DETAIL_BASE_URL}?key={key}&movieCd={movieCd}'
+            det_response = requests.get(API_DETAIL_URL)
+            det_data = det_response.json()
+            # pprint(det_data)
+            try:
+                director = det_data['movieInfoResult']['movieInfo']['directors'][0]['peopleNm']
+            except:
+                pass
+            try:
+                directorEn = det_data['movieInfoResult']['movieInfo']['directors'][0]['peopleNmEn']
+            except:
+                pass
+
             movie_data[movie.get('movieCd')] = {
                 '기간순위': showRange + movie.get('rank'),
                 '기간': showRange,
@@ -40,6 +53,8 @@ with open('movie.csv', 'w', encoding='utf-8') as f:
                 '영화명(국문)': movie.get('movieNm'),
                 '순위': movie.get('rank'),
                 '개봉일': movie.get('openDt'),
+                '감독명(국문)': director,
+                '감독명(영문)': directorEn,
             }
 
         for item in movie_data.values():
