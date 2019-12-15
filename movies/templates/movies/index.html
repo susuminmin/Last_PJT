@@ -6,68 +6,61 @@
 }
 
 .page-content h1 {
-  font-family: 'Nanum Pen Script', cursive;
-  text-size: 30px;
+  text-size: 200px;
 }
+
+input[type=text] {
+  text-align: center;
+  background: transparent;
+  font-family: 'Nanum Pen Script', cursive;
+  border: none;
+  border-bottom: 0.5px solid #42195f;
+}
+
+form {
+  font-family: 'Nanum Pen Script', cursive;
+  {% comment %} font-family: 'Nanum Myeongjo', serif; {% endcomment %}
+  font-size: 35px;
+  font-weight: bold;
+  color: #c6bfca;
+}
+
+form > button {
+  background: transparent;
+  color: #c6bfca;
+  border: none;
+  border-bottom: 0.5px solid #42195f;
+}
+
+.story {
+  margin-top: 20px;
+}
+
+.story > p {
+  text-align: center-left;
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 15px;
+  color: #c6bfca;
+}
+
 {% endblock style %}
 
 {% block container %}
   <div class="page-content">
-  <h1>그날의 박스오피스</h1>
-  <form style="font-size: 16px"method="POST">
+  {% comment %} <h1>그날의 박스오피스</h1> {% endcomment %}
+  <form method="POST">
     {% csrf_token %}
     {% comment %} {{ dateform.month }} 월 {{ dateform.day }} 일 {% endcomment %}
-    <select name="month">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-      <option value="11">11</option>
-      <option value="12">12</option>
-    </select>
-    월
-    <select name="day">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-      <option value="11">11</option>
-      <option value="12">12</option>
-      <option value="13">13</option>
-      <option value="14">14</option>
-      <option value="15">15</option>
-      <option value="16">16</option>
-      <option value="17">17</option>
-      <option value="18">18</option>
-      <option value="19">19</option>
-      <option value="20">20</option>
-      <option value="21">21</option>
-      <option value="22">22</option>
-      <option value="23">23</option>
-      <option value="24">24</option>
-      <option value="25">25</option>
-      <option value="26">26</option>
-      <option value="27">27</option>
-      <option value="28">28</option>
-      <option value="29">29</option>
-      <option value="30">30</option>
-      <option value="31">31</option>
-    </select>
-    일
-    <button type="submit">Go</button>
+    <input size="1.2" type="text" name="month">월
+    <input size="1.2" type="text" name="day">일의 영화 순위
+    <button type="submit">보러가기</button>
   </form>
+  <div class="story">
+    <p>{{ user.username }} 님의 특별한 날을 입력해 보세요</p> 
+    <p>2018년에서 2004년까지</p>  
+    <p>그날의 추억을 간직한 박스오피스를 보여드립니다 </p>
+  </div>
+
   </div>
 {% endblock container %}
 
