@@ -40,10 +40,21 @@ $ python manage.py runserver
 ## Features
 * 회원가입, 로그인
 
+> 회원가입 페이지
+
+  ![](img/signup.png)
+
+> 로그인 페이지
+
+  ![](img/login-1576416548817.png)
+
+
+
   * 로그인 상태에서만 서비스를 이용할 수 있습니다.
   * 로그인 시 사이드바에 검색 내역이 나타납니다.
   * 클릭하면 기존에 조회한 영화 혹은 날짜 페이지로 이동합니다.
-    
+
+  ![sidebar](img/sidebar.gif)
 
 * 4월 1일을 검색하면 2018년 ~ 2004년 박스오피스 TOP 1~4 영화 목록이 조회됩니다.
 
@@ -54,9 +65,9 @@ $ python manage.py runserver
   
 
 
-* 영화 상세보기 페이지에서는 영화제목, 출연 배우, 네이버 영화 링크, 영화 포스터, 줄거리를 제공합니다.
+* 영화 상세보기 페이지에서는 영화제목, 출연 배우, 네이버 영화 링크, 영화 포스터, 줄거리를 제공합니다. 하단에 익명 리뷰와 별점을 남길 수 있습니다.
   
-  ![](img/review_and_sidebar.gif)
+  ![review-and-naver](img/review-and-naver.gif)
 
 ## Status
 알파 버전 개발 중
