@@ -1,8 +1,15 @@
 {% extends 'base.html' %}
 
-{% block logo %}그날의 박스오피스{% endblock logo %}
-{% block body %}
-  <form method="POST">
+{% block style %}
+.page-content {
+  text-align: center;
+}
+{% endblock style %}
+
+{% block container %}
+  <div class="page-content">
+  <h1>그날의 박스오피스</h1>
+  <form style="font-size: 16px"method="POST">
     {% csrf_token %}
     {% comment %} {{ dateform.month }} 월 {{ dateform.day }} 일 {% endcomment %}
     <select name="month">
@@ -54,10 +61,10 @@
       <option value="31">31</option>
     </select>
     일
-    <button type="submit" class="btn btn-default">Go</button>
+    <button type="submit">Go</button>
   </form>
-
-{% endblock body %}
+  </div>
+{% endblock container %}
 
 {% comment %} sidebar에 날짜 넣는 부분 {% endcomment %}
 {% block date %}
