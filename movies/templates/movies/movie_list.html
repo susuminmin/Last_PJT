@@ -1,4 +1,17 @@
 {% extends 'base.html' %}
+
+{% block style %}
+
+.title h1 {
+  font-family: 'Nanum Pen Script', cursive;
+  text-size: 40px;
+}
+
+.container p {
+  font-family: 'Nanum Pen Script', cursive;
+}
+{% endblock style %}
+
 {% block logo %}
 <div class="title">
   <h1>{{ date.month }}월 {{ date.day }}일의 영화 순위</h1>
