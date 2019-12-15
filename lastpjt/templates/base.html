@@ -422,13 +422,9 @@
       margin: 7px 0 0 10px;
     }
 
-      {
-      % block style %
-    }
+    {% block style %}
+    {% endblock style %}
 
-      {
-      % endblock style %
-    }
   </style>
   <link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Nanum+Gothic|Nanum+Myeongjo|Noto+Serif+KR&display=swap" rel="stylesheet">
 </head>
@@ -507,10 +503,14 @@
       </button>
       <div class="container">
         <div class="row">
-          <div class="col-lg-8 col-lg-offset-2" style="margin-left: 80px">
+          <div class="col-lg-8 col-lg-offset-2" style="margin-left: auto">
             <h1>{% block logo %}{% endblock logo %}</h1>
             {% block body %}
             {% endblock body %}
+          </div>
+          <div class="col-lg-8 col-lg-offset-2">
+            {% block container %}
+            {% endblock container %}
           </div>
         </div>
       </div>
