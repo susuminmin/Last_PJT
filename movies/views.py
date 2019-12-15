@@ -39,6 +39,7 @@ def index(request):
             'clicked_movies': clicked_movies,
             'searched_dates': searched_dates,
             'dateform': dateform,
+            'user': user,
         }
         return render(request, 'movies/index.html', context)
     # 로그인 X 유저일 경우 아예 아무 것도 못 함
