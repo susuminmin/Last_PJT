@@ -44,7 +44,7 @@
 
 10. `$ heroku create sue-ssung-project` 프로젝트 이름 정해주기
 
-11. 헤로쿠 셋팅
+11. 헤로쿠 셋팅 
 
     - 헤로쿠 홈페이지 -> 우리가 만든 서버가 나옴
     - settings -> config vars 에서 Reveal Config Vars 클릭 -> SETCRET_KEY , DEBUG value 입력

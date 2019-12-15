@@ -1,0 +1,1 @@
+web: gunicorn Movie_recemmend_PJT.wsgi --log-file -
